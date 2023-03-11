@@ -6,7 +6,7 @@ from time import time
 from pygame import mixer
 pygame.init()
 #   functions
-num_of_enemies = 100
+num_of_enemies = 5
 score = 0
 sTime = None
 
