@@ -14,17 +14,17 @@ sTime = None
 def stage1():
     global score
     global num_of_enemies
-    over_font = pygame.font.Font("Pokemon Solid.ttf", 40)
+    over_font = pygame.font.Font("Pokemon Solid.ttf", 40)     #Fonts for the output messages
     font =  pygame.font.Font("Pokemon Solid.ttf", 38)
-    def game_over_text():
+    def game_over_text():                                     #Outputs game over message
         over_text = over_font.render("YOU LOSE!!! SCROLL UP TO RESTART", True, (255, 255, 255))
         screen.blit(over_text, (230, 250))
         
-    def move_on():
+    def move_on():                                            #Outputs what to do after clearing a stage
         over_text = font.render("Scroll up to continue Scroll down to quit", True, (255, 255, 255))
         screen.blit(over_text, (230, 400))
 
-    def stage_clear():
+    def stage_clear():                                        #Outputs stage clear
         over_text = font.render("Stage Clear", True, (255, 255, 255))
         screen.blit(over_text, (230, 250))
 
@@ -64,8 +64,8 @@ def stage1():
     print(enemy)
 
 
-
-
+ 
+    #Bullet Settings
     background1 = pygame.image.load('background.png')
     bulletImg = pygame.image.load('PIKA.png')
     bulletchangeX = 15
@@ -78,7 +78,7 @@ def stage1():
 
     def bull(x,y):
         screen.blit(bulletImg,(x,y) )
-        
+    #Check collison with enemy    
     def collide(x1,y1,x2,y2):
         if ((x1-x2)**2 + (y1-y2)**2)**0.5 <= 63:
             return True
@@ -104,7 +104,11 @@ def stage1():
     while running:
         temp = num_of_enemies
         
+        
         screen.fill((0,0,0))
+        
+        #Move commands for player
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -121,6 +125,7 @@ def stage1():
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     pchangex = 0
                     pchangey = 0
+            #Command for player to shoot        
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouseposi = pygame.mouse.get_pos()
                 mouseX =  mouseposi[0]
@@ -144,7 +149,7 @@ def stage1():
         playY += pchangey
         bulletX += math.cos(angle)*bulletchangeX
         bulletY += math.sin(angle)*bulletchangeY
-        
+        #Ensures that player stays within boundary
         if playX < 0:
             playX = 0
         elif playX > 1136:
@@ -167,7 +172,7 @@ def stage1():
             elif enemies["enemy"+str(x)][1] < playY:
                 enemyY_change[x] = 1
 
-    
+        #Ensures that enemy stays in the screen
         for i in range(num_of_enemies):
             if enemies["enemy"+str(i)] == None:
                 continue
@@ -197,8 +202,10 @@ def stage1():
 
 
 
-
-        sTime = None      
+       
+        sTime = None  
+        
+        #Check for player collsion with enemy
         for j in range(num_of_enemies):
             if enemies["enemy"+str(j)] == None:
                 continue
@@ -213,7 +220,7 @@ def stage1():
      
         
         bull(bulletX, bulletY)
-        
+        #adds score for player
         for item in range(num_of_enemies):
             if enemies["enemy"+str(item)] == None:
                 continue
@@ -221,6 +228,8 @@ def stage1():
                 enemies["enemy"+str(item)] = None
                 score += 1
                 check -= 1
+                
+        #Outputs required message when game ends        
         if playHP == 0:
             
             game_over_text()
@@ -241,6 +250,7 @@ def stage1():
             bullet_state = 'ready'
             print(score)
             
+            #Check if player wants to continue
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     
@@ -253,7 +263,7 @@ def stage1():
 
 
                         
-        
+        #Framerate
         clock.tick(200)
         pygame.display.update() 
 stage1()
